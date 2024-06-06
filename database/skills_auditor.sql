@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 02:01 PM
+-- Generation Time: Jun 06, 2024 at 02:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,7 +34,8 @@ CREATE TABLE `employee` (
   `system_role` int(11) NOT NULL,
   `job_role` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
-  `surname` varchar(50) NOT NULL
+  `surname` varchar(50) NOT NULL,
+  `managed_by` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -135,7 +136,8 @@ INSERT INTO `system_role` (`id`, `role`) VALUES
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`id`),
   ADD KEY `system_role` (`system_role`),
-  ADD KEY `job_role` (`job_role`);
+  ADD KEY `job_role` (`job_role`),
+  ADD KEY `managed_by` (`managed_by`);
 
 --
 -- Indexes for table `employee_skill_details`
@@ -226,7 +228,8 @@ ALTER TABLE `system_role`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`system_role`) REFERENCES `system_role` (`id`),
-  ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`job_role`) REFERENCES `job_role` (`id`);
+  ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`job_role`) REFERENCES `job_role` (`id`),
+  ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`id`) REFERENCES `employee` (`managed_by`);
 
 --
 -- Constraints for table `employee_skill_details`
