@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jun 06, 2024 at 02:39 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Host: localhost
+-- Generation Time: Jun 21, 2024 at 01:03 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -35,8 +35,20 @@ CREATE TABLE `employee` (
   `job_role` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
-  `managed_by` int(11) DEFAULT NULL
+  `managed_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`id`, `username`, `password`, `system_role`, `job_role`, `first_name`, `surname`, `managed_by`) VALUES
+(1, 'jdoe@email.com', 'Test1', 1, 1, 'John', 'Doe', 3),
+(2, 'jsmith@email.com', 'Test2', 1, 1, 'Jane', 'Smith', 4),
+(3, 'edavis@email.com', 'Test3', 2, 2, 'Emily', 'Davis', 3),
+(4, 'owilson@email.com', 'Test4', 2, 2, 'Olivia', 'Wilson', 4),
+(5, 'rbrown@email.com', 'Test5', 3, 3, 'Robert', 'Brown', 3),
+(6, 'mjohnson@email.com', 'Test6', 3, 3, 'Michael', 'Johnson', 4);
 
 -- --------------------------------------------------------
 
@@ -52,6 +64,16 @@ CREATE TABLE `employee_skill_details` (
   `level` int(11) NOT NULL,
   `notes` varchar(535) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `employee_skill_details`
+--
+
+INSERT INTO `employee_skill_details` (`id`, `employee`, `skill`, `expiration`, `level`, `notes`) VALUES
+(1, 1, 'Git', '2025-06-01', 2, 'Good experience with Git'),
+(2, 2, 'Junit', NULL, 3, 'Strong experience with Junit'),
+(3, 3, 'Word', NULL, 1, NULL),
+(4, 4, 'Java', '2024-06-20', 3, NULL);
 
 -- --------------------------------------------------------
 
@@ -84,6 +106,16 @@ CREATE TABLE `skill` (
   `category` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `skill`
+--
+
+INSERT INTO `skill` (`name`, `category`) VALUES
+('Word', 1),
+('Java', 2),
+('Junit', 3),
+('Git', 4);
+
 -- --------------------------------------------------------
 
 --
@@ -95,6 +127,16 @@ CREATE TABLE `skill_categories` (
   `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `skill_categories`
+--
+
+INSERT INTO `skill_categories` (`id`, `name`) VALUES
+(1, 'Office 365'),
+(2, 'Programming'),
+(3, 'Testing Tools'),
+(4, 'Version Control');
+
 -- --------------------------------------------------------
 
 --
@@ -105,6 +147,15 @@ CREATE TABLE `skill_level` (
   `id` int(11) NOT NULL,
   `level` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `skill_level`
+--
+
+INSERT INTO `skill_level` (`id`, `level`) VALUES
+(1, 'Basic'),
+(2, 'Advanced'),
+(3, 'Expert');
 
 -- --------------------------------------------------------
 
@@ -187,13 +238,13 @@ ALTER TABLE `system_role`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `employee_skill_details`
 --
 ALTER TABLE `employee_skill_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `job_role`
@@ -205,13 +256,13 @@ ALTER TABLE `job_role`
 -- AUTO_INCREMENT for table `skill_categories`
 --
 ALTER TABLE `skill_categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `skill_level`
 --
 ALTER TABLE `skill_level`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `system_role`
@@ -229,7 +280,7 @@ ALTER TABLE `system_role`
 ALTER TABLE `employee`
   ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`system_role`) REFERENCES `system_role` (`id`),
   ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`job_role`) REFERENCES `job_role` (`id`),
-  ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`id`) REFERENCES `employee` (`managed_by`);
+  ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`managed_by`) REFERENCES `employee` (`id`);
 
 --
 -- Constraints for table `employee_skill_details`
