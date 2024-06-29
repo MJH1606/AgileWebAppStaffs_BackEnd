@@ -1,3 +1,4 @@
+/*
 const controller = require('../controllers/toolCategory');
 var express = require('express');
 
@@ -9,3 +10,4 @@ router.get('/:id', controller.getById);
 
 
 module.exports = router;
+*/

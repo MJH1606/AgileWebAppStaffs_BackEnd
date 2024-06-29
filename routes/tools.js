@@ -1,3 +1,4 @@
+/*
 const app = require('../app');
 const controller = require('../controllers/tools');
 const express = require('express');
@@ -14,3 +15,4 @@ router.delete('/',controller.deleting);
 router.put('/', controller.update);
 
 module.exports = router;
+*/
