@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, systemRole) => {
     const Employee = sequelize.define("employee",
     {
         username: {
@@ -7,7 +7,7 @@ module.exports = (sequelize, Sequelize) => {
         password: {
         type: Sequelize.STRING
         },
-        system_role: {
+        system_role_id: {
             type: Sequelize.INTEGER
         },
         job_role: {
@@ -29,8 +29,8 @@ module.exports = (sequelize, Sequelize) => {
         tableName: 'employee'
     }
     );
-    //Tool.belongsTo(toolCategory,
-    //    {foreignKey: 'tool_category_id'});
+    Employee.belongsTo(systemRole,
+        {foreignKey: 'system_role_id'});
         
     return Employee;
 };
