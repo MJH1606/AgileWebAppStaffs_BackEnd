@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jun 21, 2024 at 01:03 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Host: 127.0.0.1
+-- Generation Time: Jul 05, 2024 at 12:42 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,7 +31,7 @@ CREATE TABLE `employee` (
   `id` int(11) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(255) NOT NULL,
-  `system_role` int(11) NOT NULL,
+  `system_role_id` int(11) NOT NULL,
   `job_role` int(11) NOT NULL,
   `first_name` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `employee` (
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`id`, `username`, `password`, `system_role`, `job_role`, `first_name`, `surname`, `managed_by`) VALUES
+INSERT INTO `employee` (`id`, `username`, `password`, `system_role_id`, `job_role`, `first_name`, `surname`, `managed_by`) VALUES
 (1, 'jdoe@email.com', 'Test1', 1, 1, 'John', 'Doe', 3),
 (2, 'jsmith@email.com', 'Test2', 1, 1, 'Jane', 'Smith', 4),
 (3, 'edavis@email.com', 'Test3', 2, 2, 'Emily', 'Davis', 3),
@@ -186,7 +186,7 @@ INSERT INTO `system_role` (`id`, `role`) VALUES
 --
 ALTER TABLE `employee`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `system_role` (`system_role`),
+  ADD KEY `system_role` (`system_role_id`),
   ADD KEY `job_role` (`job_role`),
   ADD KEY `managed_by` (`managed_by`);
 
@@ -278,7 +278,7 @@ ALTER TABLE `system_role`
 -- Constraints for table `employee`
 --
 ALTER TABLE `employee`
-  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`system_role`) REFERENCES `system_role` (`id`),
+  ADD CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`system_role_id`) REFERENCES `system_role` (`id`),
   ADD CONSTRAINT `employee_ibfk_2` FOREIGN KEY (`job_role`) REFERENCES `job_role` (`id`),
   ADD CONSTRAINT `employee_ibfk_3` FOREIGN KEY (`managed_by`) REFERENCES `employee` (`id`);
 
