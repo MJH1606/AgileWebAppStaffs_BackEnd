@@ -31,7 +31,7 @@ db.sequelize = sequelize;
 db.systemRole = SystemRole(sequelize, Sequelize);
 db.jobRole = JobRole(sequelize, Sequelize);
 db.employee = Employee(sequelize, Sequelize, db.systemRole, db.jobRole);
-db.skill = Skill(sequelize, Sequelize, db.skillCategory);
 db.skillCategory = SkillCategory(sequelize, Sequelize)
+db.skill = Skill(sequelize, Sequelize, db.skillCategory);
 
 module.exports = db;
