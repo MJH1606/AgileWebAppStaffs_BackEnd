@@ -1,16 +1,15 @@
-module.exports = (sequelize, Sequelize, systemRole) => {
-    const Employee = sequelize.define("employee",
-    {
+module.exports = (sequelize, Sequelize, systemRole, jobRole) => {
+    const Employee = sequelize.define("employee", {
         username: {
-        type: Sequelize.STRING
+            type: Sequelize.STRING
         },
         password: {
-        type: Sequelize.STRING
+            type: Sequelize.STRING
         },
         system_role_id: {
             type: Sequelize.INTEGER
         },
-        job_role: {
+        job_role_id: {
             type: Sequelize.INTEGER
         },
         first_name: {
@@ -22,15 +21,14 @@ module.exports = (sequelize, Sequelize, systemRole) => {
         managed_by: {
             type: Sequelize.INTEGER
         },
-    },
-    {
+    }, {
         timestamps: false,
         freezeTableName: true,
         tableName: 'employee'
-    }
-    );
-    Employee.belongsTo(systemRole,
-        {foreignKey: 'system_role_id'});
-        
+    });
+
+    Employee.belongsTo(systemRole, { foreignKey: 'system_role_id' });
+    Employee.belongsTo(jobRole, { foreignKey: 'job_role_id' });
+
     return Employee;
 };
