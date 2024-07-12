@@ -4,35 +4,36 @@ const db = require("../models");
 
 
 const Skill = db.skill;
+const SkillCategory = db.skillCategory;
 
 getAll = async (req, res) => {
-    const skill = await Skill.findAll(//{
-        //order:['id'],
-        //include: [{
-        //model: ToolCategory,
-        //required: true
-        //}]
-        //}
+    const skill = await Skill.findAll({
+        order:['name'],
+        include: [{
+        model: SkillCategory,
+        required: true
+        }]
+        }
     );
     res.status(200).json(skill);
 };
-/*
-getByDesc = async (req, res) => {
-    const desc = req.params.value;
+
+getByName = async (req, res) => {
+    const name = req.params.value;
     try {
-        const tool = await Tool.findAll({ where: { description: desc },
+        const skill = await Skill.findAll({ where: { name: name },
             include: [{
-            model: ToolCategory,
+            model: SkillCategory,
             required: true}] });
-    if (tool.length == 0) {
-        throw new Error("Unable to find Tool with description " + desc);
+    if (skill.length == 0) {
+        throw new Error("Unable to find Skill with name " + name);
     }
-    res.status(200).json(tool);
+    res.status(200).json(skill);
     } catch (error) {
         utilities.formatErrorResponse(res, 400, error.message);
     }
 };
-
+/*
 getById = async (req, res) => {
     const id = req.params.id;
     try {
@@ -100,4 +101,4 @@ update = async (req, res) =>{
     }
 }
 */
-module.exports = { getAll};
+module.exports = { getAll, getByName};

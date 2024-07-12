@@ -1,4 +1,4 @@
-module.exports = (sequelize, Sequelize) => {
+module.exports = (sequelize, Sequelize, skillCategory) => {
     const Skill = sequelize.define("skill",
     {
         name: {
@@ -15,8 +15,8 @@ module.exports = (sequelize, Sequelize) => {
         tableName: 'skill'
     }
     );
-    //Tool.belongsTo(toolCategory,
-    //    {foreignKey: 'tool_category_id'});
+    Skill.belongsTo(skillCategory,
+        {foreignKey: 'category'});
         
     return Skill;
 };
