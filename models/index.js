@@ -1,10 +1,9 @@
 const config = require("../config/config");
-//const Tool = require("././tool");
-//const ToolCategory = require("./toolCategory");
 const Sequelize = require("sequelize");
-const Employee = require("././employee");
-const Skill = require("././skill");
-const SystemRole = require("././systemRole");
+const Employee = require("./employee");
+const Skill = require("./skill");
+const SystemRole = require("./systemRole");
+const JobRole = require("./jobRole");
 
 const sequelize = new Sequelize(
     config.DB,
@@ -15,6 +14,7 @@ const sequelize = new Sequelize(
         port: config.PORT
     }
 );
+
 sequelize
     .authenticate()
     .then(() => {
@@ -27,10 +27,9 @@ sequelize
 const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
-//db.toolCategory = ToolCategory(sequelize, Sequelize);
-//db.tool = Tool(sequelize, Sequelize, db.toolCategory);
 db.systemRole = SystemRole(sequelize, Sequelize);
-db.employee = Employee(sequelize, Sequelize, db.systemRole);
+db.jobRole = JobRole(sequelize, Sequelize);
+db.employee = Employee(sequelize, Sequelize, db.systemRole, db.jobRole);
 db.skill = Skill(sequelize, Sequelize);
 
 module.exports = db;

@@ -1,33 +1,20 @@
-const router = require("../routes/employees");
+const router = require("../routes/jobRole");
 const utilities = require("../utilities/utility");
 const db = require("../models");
 
 
-const Employee = db.employee;
-const SystemRole = db.systemRole
-const JobRole = db.jobRole
+const JobRole = db.jobRole;
 
-const getAll = async (req, res) => {
-    try {
-        const employees = await Employee.findAll({
-            order: ['id'],
-            include: [
-                {
-                    model: SystemRole,
-                    as: 'system_role',
-                    required: true
-                },
-                {
-                    model: JobRole,
-                    as: 'job_role',
-                    required: true
-                }
-            ]
-        });
-        res.status(200).json(employees);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
+getAll = async (req, res) => {
+    const jobRole = await JobRole.findAll(//{
+        //order:['id'],
+        //include: [{
+        //model: ToolCategory,
+        //required: true
+        //}]
+        //}
+    );
+    res.status(200).json(jobRole);
 };
 /*
 getByDesc = async (req, res) => {
