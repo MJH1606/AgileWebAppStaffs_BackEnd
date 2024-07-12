@@ -8,6 +8,7 @@ const port = process.env.PORT || '8900';
 const employeeRouter = require('./routes/employees')
 const skillRouter = require('./routes/skills')
 const systemRoleRouter = require('./routes/systemRole')
+const skillCategoryRouter = require('./routes/skillCategory')
 //const toolsRouter = require('./routes/tools');
 //const toolCategoryRouter = require('./routes/toolCategory');
 
@@ -21,6 +22,7 @@ app.listen(port); //Start the server
 app.use("/api/employees", employeeRouter)
 app.use("/api/skills", skillRouter)
 app.use("/api/systemRole", systemRoleRouter)
+app.use("/api/skillCategory", skillCategoryRouter)
 //app.use("/api/tools", toolsRouter);
 //app.use("/api/toolCategory",toolCategoryRouter);
 

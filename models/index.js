@@ -3,8 +3,9 @@ const config = require("../config/config");
 //const ToolCategory = require("./toolCategory");
 const Sequelize = require("sequelize");
 const Employee = require("././employee");
-const Skill = require("././skill");
 const SystemRole = require("././systemRole");
+const Skill = require("././skill");
+const SkillCategory = require("././skillCategory")
 
 const sequelize = new Sequelize(
     config.DB,
@@ -31,6 +32,7 @@ db.sequelize = sequelize;
 //db.tool = Tool(sequelize, Sequelize, db.toolCategory);
 db.systemRole = SystemRole(sequelize, Sequelize);
 db.employee = Employee(sequelize, Sequelize, db.systemRole);
-db.skill = Skill(sequelize, Sequelize);
+db.skillCategory = SkillCategory(sequelize, Sequelize)
+db.skill = Skill(sequelize, Sequelize, db.skillCategory);
 
 module.exports = db;

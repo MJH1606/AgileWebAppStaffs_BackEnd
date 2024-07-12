@@ -1,12 +1,12 @@
 const app = require('../app');
-const controller = require('../controllers/skills');
+const controller = require('../controllers/skillCategory');
 const express = require('express');
 
 
 const router = express.Router();
 
 router.get('/', controller.getAll);
-router.get('/name/:value', controller.getByName);
+//router.get('/desc/:value', controller.getByDesc);
 //router.get('/:id', controller.getById);
 
 //router.post('/', controller.create);
