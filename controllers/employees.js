@@ -21,7 +21,6 @@ const getAll = async (req, res) => {
                     required: true
                 }
             ],
-            attributes: { exclude: ['system_role_id', 'job_role_id'] } // Exclude these fields
         });
         res.status(200).json(employees);
     } catch (err) {
@@ -49,7 +48,7 @@ const getByJobRole = async (req, res) => {
                 }
             ],
             order: ['id'],
-            attributes: { exclude: ['system_role_id', 'job_role_id'] } // Exclude these fields
+            
         });
 
         if (employees.length === 0) {
