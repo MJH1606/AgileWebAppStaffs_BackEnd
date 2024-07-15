@@ -29,6 +29,37 @@ const getAll = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
+const getById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const employee = await Employee.findByPk(id, {
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                }
+            ]
+        });
+
+        if (!employee) {
+            throw new Error(`Unable to find employee with id ${id}`);
+        }
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 /*
 getByDesc = async (req, res) => {
     const desc = req.params.value;
@@ -113,4 +144,4 @@ update = async (req, res) =>{
     }
 }
 */
-module.exports = { getAll};
+module.exports = { getAll, getById};

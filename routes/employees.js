@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', controller.getAll);
+router.get('/:id', controller.getById);
 //router.get('/desc/:value', controller.getByDesc);
 //router.get('/:id', controller.getById);
 
