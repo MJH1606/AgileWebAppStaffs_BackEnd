@@ -1,11 +1,7 @@
-const router = require("../routes/employees");
-const utilities = require("../utilities/utility");
-const db = require("../models");
-
-
+const db = require('../models');
 const Employee = db.employee;
-const SystemRole = db.systemRole
-const JobRole = db.jobRole
+const SystemRole = db.systemRole;
+const JobRole = db.jobRole;
 
 const getAll = async (req, res) => {
     try {
@@ -15,20 +11,23 @@ const getAll = async (req, res) => {
                 {
                     model: SystemRole,
                     as: 'system_role',
+                    attributes: ['id', 'role'],
                     required: true
                 },
                 {
                     model: JobRole,
                     as: 'job_role',
+                    attributes: ['id', 'role'],
                     required: true
                 }
-            ]
+            ],
         });
         res.status(200).json(employees);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
+KAN-40---Get-USER-by-ID
 
 const getById = async (req, res) => {
     const id = req.params.id;
@@ -76,52 +75,43 @@ getByDesc = async (req, res) => {
         utilities.formatErrorResponse(res, 400, error.message);
     }
 };
+=======
+ main
 
-getById = async (req, res) => {
-    const id = req.params.id;
+const getByJobRole = async (req, res) => {
+    const jobRole = req.params.role;
     try {
-        const tool = await Tool.findByPk(id,
-            {include: [{model: ToolCategory, required: true}]});
-        if (tool == null || tool.length == 0) {
-        throw new Error("Unable to find Tool with id " + id);
+        const employees = await Employee.findAll({
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true,
+                    where: { role: jobRole }
+                }
+            ],
+            order: ['id'],
+            
+        });
+
+        if (employees.length === 0) {
+            throw new Error(`Unable to find employees with job role ${jobRole}`);
         }
-        res.status(200).json(tool);
+
+        res.status(200).json(employees);
     } catch (error) {
-        utilities.formatErrorResponse(res, 400, error.message);
+        res.status(400).json({ message: error.message });
     }
 };
 
-create = async (req, res) =>{
-    var tool = {
-        description: req.body.description,
-        hire_price: req.body.hire_price
-    };
-    try{
-        if (tool.description==null ||
-        tool.description.length <1 ||
-        tool.hire_price==null){
-        throw new Error("Essential fields missing");
-        }
-        tool = await Tool.create(tool);
-        res.status(201).json(tool);
-    } catch (error){
-        utilities.formatErrorResponse(res, 400,error.message);
-    }
-};
-
-deleting = async (req, res) =>{
-    const id =req.body.id;
-    try{
-        const deleted = await Tool.destroy({where: { id: id }});
-        if (deleted==0) {
-            throw new Error("Id not found");
-        }
-        res.status(200).send("Tool deleted");
-    } catch(error){
-        utilities.formatErrorResponse(res,404,error.message);
-    }
-};
-
+ KAN-40---Get-USER-by-ID
 update = async (req, res) =>{
     const id =req.body.id;
     const tool = {
@@ -145,3 +135,9 @@ update = async (req, res) =>{
 }
 */
 module.exports = { getAll, getById};
+=======
+module.exports = {
+    getAll,
+    getByJobRole
+};
+ main
