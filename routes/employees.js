@@ -1,16 +1,8 @@
-const app = require('../app');
-const controller = require('../controllers/employees');
 const express = require('express');
-
-
 const router = express.Router();
+const controller = require('../controllers/employees');  // Ensure the correct path to the controller
 
 router.get('/', controller.getAll);
-//router.get('/desc/:value', controller.getByDesc);
-//router.get('/:id', controller.getById);
-
-//router.post('/', controller.create);
-//router.delete('/',controller.deleting);
-//router.put('/', controller.update);
+router.get('/jobrole/:role', controller.getByJobRole); // Update the route to match the controller
 
 module.exports = router;
