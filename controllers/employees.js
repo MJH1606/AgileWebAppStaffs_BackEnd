@@ -61,7 +61,48 @@ const getByJobRole = async (req, res) => {
     }
 };
 
+const updateEmployee = async(req,res) => {
+    const id = req.params.id;
+    const {username, password, system_role_id, job_role_id, first_name, surname, managed_by} = req.body;
+
+    try { 
+        const employee = await Employee.findByPk(id);
+
+        if (!employee) {
+            return res.status(404).json({message: 'Employee not found'});
+        }
+
+        if (username) {
+            employee.username = username;
+        }
+        if (password) {
+            employee.password = password;
+        }
+        if (system_role_id) {
+            employee.system_role_id = system_role_id;
+        }
+        if (job_role_id) {
+            employee.job_role_id = job_role_id;
+        }
+        if (first_name) {
+            employee.first_name = first_name;
+        }
+        if (surname) {
+            employee.surname = surname;
+        }
+        if (managed_by) {
+            employee.managed_by = managed_by;
+        }
+
+        await employee.save();
+        res.status(200).json({message: 'Employee updated successfully', employee});
+    }catch (error) {
+        res.status(500).json({message:error.message})
+    }
+};
+
 module.exports = {
     getAll,
-    getByJobRole
+    getByJobRole,
+    updateEmployee
 };
