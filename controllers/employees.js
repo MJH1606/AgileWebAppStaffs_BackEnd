@@ -61,7 +61,26 @@ const getByJobRole = async (req, res) => {
     }
 };
 
+const createEmployee = async (req,res) => {
+    const {username, password, system_role_id, job_role_id, first_name, surname, managed_by} = req.body;
+    try {
+        const newEmployee = await Employee.create({
+            username,
+            password,
+            system_role_id,
+            job_role_id,
+            first_name,
+            surname,
+            managed_by
+        });
+        res.status(201).json(newEmployee);
+    } catch (error) {
+        res.status(400).json({message:error.message});
+    }
+};
+
 module.exports = {
     getAll,
-    getByJobRole
+    getByJobRole,
+    createEmployee
 };
