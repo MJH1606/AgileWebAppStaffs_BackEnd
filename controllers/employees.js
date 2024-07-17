@@ -61,7 +61,25 @@ const getByJobRole = async (req, res) => {
     }
 };
 
+const deleteEmployee = async (req, res) => {
+    const id = req.params.id;
+    try{
+        const numDeleted = await Employee.destroy({
+            where: {id}
+        });
+
+        if (numDeleted === 0){
+            throw new Error(`Unable to find employees with id ${id}`);
+        }
+
+        res.status(200).json({message: `Employee with id ${id} deleted successfully`});
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    }
+};
+
 module.exports = {
     getAll,
-    getByJobRole
+    getByJobRole,
+    deleteEmployee
 };
