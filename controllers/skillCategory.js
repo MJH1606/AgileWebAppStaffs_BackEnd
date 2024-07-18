@@ -24,4 +24,18 @@ getById = async (req, res) =>{
     }
 }
 
-module.exports = {getAll, getById}
+const getByCategory = async (req, res) => {
+    const name = req.params.category;
+    try {
+        const skillCategory = await SkillCategory.findOne({ where: { name: name } });
+        if (!skillCategory) {
+            throw new Error(`Unable to find Skill Category ${name}`);
+        }
+        res.status(200).json(skillCategory);
+    } catch (error) {
+        utilities.formatErrorResponse(res, 400, error.message);
+    }
+};
+
+
+module.exports = {getAll, getById, getByCategory}
