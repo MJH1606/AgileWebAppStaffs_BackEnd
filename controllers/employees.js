@@ -28,6 +28,36 @@ const getAll = async (req, res) => {
     }
 };
 
+const getById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const employee = await Employee.findByPk(id, {
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                }
+            ]
+        });
+
+        if (!employee) {
+            throw new Error(`Unable to find employee with id ${id}`);
+        }
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 const getByJobRole = async (req, res) => {
     const jobRole = req.params.role;
     try {
@@ -63,5 +93,6 @@ const getByJobRole = async (req, res) => {
 
 module.exports = {
     getAll,
-    getByJobRole
+    getByJobRole,
+    getById
 };
