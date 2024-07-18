@@ -33,6 +33,25 @@ getByName = async (req, res) => {
         utilities.formatErrorResponse(res, 400, error.message);
     }
 };
+
+create = async (req, res) =>{
+    var skill = {
+        name: req.body.name,
+        category: req.body.category
+    };
+    try{
+        if (skill.name==null ||
+        skill.name.length <1 ||
+        skill.category==null){
+        throw new Error("Essential fields missing");
+        }
+        skill = await Skill.create(skill);
+        res.status(201).json(skill);
+    } catch (error){
+        utilities.formatErrorResponse(res, 400,error.message);
+    }
+};
+
 /*
 getById = async (req, res) => {
     const id = req.params.id;
@@ -45,24 +64,6 @@ getById = async (req, res) => {
         res.status(200).json(tool);
     } catch (error) {
         utilities.formatErrorResponse(res, 400, error.message);
-    }
-};
-
-create = async (req, res) =>{
-    var tool = {
-        description: req.body.description,
-        hire_price: req.body.hire_price
-    };
-    try{
-        if (tool.description==null ||
-        tool.description.length <1 ||
-        tool.hire_price==null){
-        throw new Error("Essential fields missing");
-        }
-        tool = await Tool.create(tool);
-        res.status(201).json(tool);
-    } catch (error){
-        utilities.formatErrorResponse(res, 400,error.message);
     }
 };
 
@@ -101,4 +102,4 @@ update = async (req, res) =>{
     }
 }
 */
-module.exports = { getAll, getByName};
+module.exports = { getAll, getByName, create};
