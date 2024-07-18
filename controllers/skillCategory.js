@@ -59,5 +59,18 @@ create = async (req, res) =>{
     }
 };
 
+deleting = async (req, res) =>{
+    const id =req.body.id;
+    try{
+        const deleted = await SkillCategory.destroy({where: { id: id }});
+        if (deleted==0) {
+            throw new Error("Id not found");
+        }
+        res.status(200).send("Skill Category deleted");
+    } catch(error){
+        utilities.formatErrorResponse(res,404,error.message);
+    }
+};
 
-module.exports = {getAll, getById, getByCategory, create}
+
+module.exports = {getAll, getById, getByCategory, create, deleting}
