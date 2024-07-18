@@ -72,5 +72,24 @@ deleting = async (req, res) =>{
     }
 };
 
+update = async (req, res) =>{
+    const id =req.body.id;
+    const skillCategory = {
+        name: req.body.name
+    };
+    try{
+        if (id==null ||
+        skillCategory.name==null){
+            throw new Error("Missing essential fields");
+        }
+        await SkillCategory.update(skillCategory,
+            {where: { id: id }}
+        );
+        res.status(200).json(skillCategory);
+    }
+    catch (error){
+        utilities.formatErrorResponse(res,400,error.message);
+    }
+}
 
-module.exports = {getAll, getById, getByCategory, create, deleting}
+module.exports = {getAll, getById, getByCategory, create, deleting, update}

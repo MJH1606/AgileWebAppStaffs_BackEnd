@@ -11,6 +11,6 @@ router.get('/category/:category', controller.getByCategory);
 
 router.post('/', controller.create);
 router.delete('/', controller.deleting);
-//router.put('/', controller.update);
+router.put('/', controller.update);
 
 module.exports = router;
