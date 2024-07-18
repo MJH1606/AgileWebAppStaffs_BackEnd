@@ -10,7 +10,7 @@ router.get('/name/:value', controller.getByName);
 //router.get('/:id', controller.getById);
 
 router.post('/', controller.create);
-//router.delete('/',controller.deleting);
+router.delete('/',controller.deleting);
 //router.put('/', controller.update);
 
 module.exports = router;

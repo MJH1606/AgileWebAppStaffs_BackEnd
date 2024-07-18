@@ -52,6 +52,18 @@ create = async (req, res) =>{
     }
 };
 
+deleting = async (req, res) =>{
+    const name =req.body.name;
+    try{
+        const deleted = await Skill.destroy({where: { name: name }});
+        if (deleted==0) {
+            throw new Error("Name not found");
+        }
+        res.status(200).send("Skill deleted");
+    } catch(error){
+        utilities.formatErrorResponse(res,404,error.message);
+    }
+};
 /*
 getById = async (req, res) => {
     const id = req.params.id;
@@ -64,19 +76,6 @@ getById = async (req, res) => {
         res.status(200).json(tool);
     } catch (error) {
         utilities.formatErrorResponse(res, 400, error.message);
-    }
-};
-
-deleting = async (req, res) =>{
-    const id =req.body.id;
-    try{
-        const deleted = await Tool.destroy({where: { id: id }});
-        if (deleted==0) {
-            throw new Error("Id not found");
-        }
-        res.status(200).send("Tool deleted");
-    } catch(error){
-        utilities.formatErrorResponse(res,404,error.message);
     }
 };
 
@@ -102,4 +101,4 @@ update = async (req, res) =>{
     }
 }
 */
-module.exports = { getAll, getByName, create};
+module.exports = { getAll, getByName, create, deleting};
