@@ -9,7 +9,7 @@ router.get('/:id', controller.getById);
 router.get('/category/:category', controller.getByCategory);
 //router.get('/desc/:value', controller.getByDesc);
 
-//router.post('/', controller.create);
+router.post('/', controller.create);
 //router.delete('/', controller.deleting);
 //router.put('/', controller.update);
 

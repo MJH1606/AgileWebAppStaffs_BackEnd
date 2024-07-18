@@ -7,7 +7,9 @@ let { getById } = require('./skills');
 const SkillCategory = db.skillCategory;
 
 getAll = async (req, res) =>{
-    const skillCategory = await SkillCategory.findAll();
+    const skillCategory = await SkillCategory.findAll({
+        order:['id']
+    });
     res.status(200).json(skillCategory);
 }
 
@@ -24,7 +26,7 @@ getById = async (req, res) =>{
     }
 }
 
-const getByCategory = async (req, res) => {
+getByCategory = async (req, res) => {
     const name = req.params.category;
     try {
         const skillCategory = await SkillCategory.findOne({ where: { name: name } });
@@ -37,5 +39,25 @@ const getByCategory = async (req, res) => {
     }
 };
 
+create = async (req, res) =>{
+    var skillCategory = {
+        name: req.body.name,
+    };
+    try{
+        if (skillCategory.name==null ||
+        skillCategory.name.length <1){
+        throw new Error("Essential fields missing");
+        }
+        skillCategory = await SkillCategory.create(skillCategory);
+        res.status(201).json(skillCategory);
+    } catch (error){
+        if (error.name === 'SequelizeUniqueConstraintError') {
+            utilities.formatErrorResponse(res, 400,error.message);
+        } else {
+            utilities.formatErrorResponse(res, 400,error.message);
+        }
+    }
+};
 
-module.exports = {getAll, getById, getByCategory}
+
+module.exports = {getAll, getById, getByCategory, create}
