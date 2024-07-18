@@ -3,7 +3,9 @@ module.exports = (sequelize, Sequelize) => {
     sequelize.define("skill_categories",
     {
         name: {
-            type: Sequelize.STRING
+            type: Sequelize.STRING,
+            allowNull: false,
+            unique: true
         }
     },
     {
