@@ -11,6 +11,6 @@ router.get('/name/:value', controller.getByName);
 
 router.post('/', controller.create);
 router.delete('/',controller.deleting);
-//router.put('/', controller.update);
+router.put('/', controller.update);
 
 module.exports = router;

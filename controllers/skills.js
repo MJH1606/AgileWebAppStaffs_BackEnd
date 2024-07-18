@@ -64,6 +64,26 @@ deleting = async (req, res) =>{
         utilities.formatErrorResponse(res,404,error.message);
     }
 };
+
+update = async (req, res) =>{
+    const name =req.body.name;
+    const skill = {
+        category: req.body.category
+    };
+    try{
+        if (name==null ||
+        skill.category==null){
+            throw new Error("Missing essential fields");
+        }
+        await Skill.update(skill,
+            {where: { name: name }}
+        );
+        res.status(200).json(skill);
+    }
+    catch (error){
+        utilities.formatErrorResponse(res,400,error.message);
+    }
+}
 /*
 getById = async (req, res) => {
     const id = req.params.id;
@@ -78,27 +98,5 @@ getById = async (req, res) => {
         utilities.formatErrorResponse(res, 400, error.message);
     }
 };
-
-update = async (req, res) =>{
-    const id =req.body.id;
-    const tool = {
-        description: req.body.description,
-        hire_price: req.body.hire_price
-    };
-    try{
-        if (id==null ||
-        tool.description==null ||
-        tool.hire_price==null){
-            throw new Error("Missing essentialfields");
-        }
-        await Tool.update(tool,
-            {where: { id: id }}
-        );
-        res.status(200).json(tool);
-    }
-    catch (error){
-        utilities.formatErrorResponse(res,400,error.message);
-    }
-}
 */
-module.exports = { getAll, getByName, create, deleting};
+module.exports = { getAll, getByName, create, deleting, update};
