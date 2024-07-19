@@ -6,11 +6,15 @@ router.get('/', controller.getAll);
 router.get('/jobrole/:role', controller.getByJobRole);
 router.get('/systemrole/:systemRole', controller.getBySystemRole);
 
-router.get('/:id', controller.getById);
-//router.get('/desc/:value', controller.getByDesc);
+router.post('/', controller.createEmployee); 
+router.get('/name/:firstName/:surname', controller.getByName); 
+router.get('/:id', controller.getById); 
+router.put('/update/:id', controller.updateEmployee); 
+router.delete('/delete/:id', controller.deleteEmployee); 
 
-//router.post('/', controller.create);
-//router.delete('/',controller.deleting);
-//router.put('/', controller.update);
+
+// router.get('/desc/:value', controller.getByDesc);
+// router.delete('/', controller.deleting);
+// router.put('/', controller.update);
 
 module.exports = router;
