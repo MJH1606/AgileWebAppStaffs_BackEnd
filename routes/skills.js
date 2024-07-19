@@ -9,8 +9,8 @@ router.get('/', controller.getAll);
 router.get('/name/:value', controller.getByName);
 //router.get('/:id', controller.getById);
 
-//router.post('/', controller.create);
-//router.delete('/',controller.deleting);
-//router.put('/', controller.update);
+router.post('/', controller.create);
+router.delete('/',controller.deleting);
+router.put('/', controller.update);
 
 module.exports = router;

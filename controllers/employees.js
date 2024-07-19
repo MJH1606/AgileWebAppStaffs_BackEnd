@@ -19,12 +19,56 @@ const getAll = async (req, res) => {
                     as: 'job_role',
                     attributes: ['id', 'role'],
                     required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
         });
         res.status(200).json(employees);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+};
+
+
+const getById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const employee = await Employee.findByPk(id, {
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
+                }
+            ]
+        });
+
+        if (!employee) {
+            throw new Error(`Unable to find employee with id ${id}`);
+        }
+       
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 };
 
@@ -45,6 +89,12 @@ const getByJobRole = async (req, res) => {
                     attributes: ['id', 'role'],
                     required: true,
                     where: { role: jobRole }
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
             order: ['id'],
@@ -61,15 +111,15 @@ const getByJobRole = async (req, res) => {
     }
 };
 
-const updateEmployee = async(req,res) => {
+const updateEmployee = async (req, res) => {
     const id = req.params.id;
-    const {username, password, system_role_id, job_role_id, first_name, surname, managed_by} = req.body;
+    const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
 
-    try { 
+    try {
         const employee = await Employee.findByPk(id);
 
         if (!employee) {
-            return res.status(404).json({message: 'Employee not found'});
+            return res.status(404).json({ message: 'Employee not found' });
         }
 
         if (username) {
@@ -95,14 +145,70 @@ const updateEmployee = async(req,res) => {
         }
 
         await employee.save();
-        res.status(200).json({message: 'Employee updated successfully', employee});
-    }catch (error) {
-        res.status(500).json({message:error.message})
+        res.status(200).json({ message: 'Employee updated successfully', employee });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
+};
+
+const createEmployee = async (req, res) => {
+    const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
+    try {
+        const newEmployee = await Employee.create({
+            username,
+            password,
+            system_role_id,
+            job_role_id,
+            first_name,
+            surname,
+            managed_by
+        });
+        res.status(201).json(newEmployee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+const getByName = async (req, res) => {
+    const { firstName, surname } = req.params;
+    try {
+        const employee = await Employee.findAll({
+            where: {
+                first_name: firstName,
+                surname: surname
+            },
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true,
+                }
+            ],
+            order: ['id'],
+        });
+
+        if (employee.length === 0) {
+            throw new Error(`Unable to find employees with name ${firstName} ${surname}`);
+        }
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    } 
 };
 
 module.exports = {
     getAll,
     getByJobRole,
-    updateEmployee
+    createEmployee,  
+    getByName,       
+    updateEmployee,  
+    getById
 };
