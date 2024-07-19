@@ -111,8 +111,45 @@ const getByJobRole = async (req, res) => {
     }
 };
 
+const getByName = async (req,res) => {
+    const {firstName, surname} = req.params
+    try{
+        const employee = await Employee.findAll({
+            where: {
+                first_name: firstName,
+                surname: surname
+            },
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true,
+                }
+            ],
+            order: ['id'],
+        });
+
+        if (employee.length === 0) {
+            throw new Error(`Unable to find employees with job role ${jobRole}`);
+        }
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({message: error.message});
+    } 
+};
+
 module.exports = {
     getAll,
     getByJobRole,
+    getByName,
     getById
 };
+
