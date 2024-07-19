@@ -111,6 +111,23 @@ const getByJobRole = async (req, res) => {
     }
 };
 
+const deleteEmployee = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const numDeleted = await Employee.destroy({
+            where: { id }
+        });
+
+        if (numDeleted === 0) {
+            throw new Error(`Unable to find employee with id ${id}`);
+        }
+
+        res.status(200).json({ message: `Employee with id ${id} deleted successfully` });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
 const updateEmployee = async (req, res) => {
     const id = req.params.id;
     const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
@@ -207,8 +224,9 @@ const getByName = async (req, res) => {
 module.exports = {
     getAll,
     getByJobRole,
-    createEmployee,  
+    createEmployee, 
     getByName,       
     updateEmployee,  
+    deleteEmployee,  
     getById
 };
