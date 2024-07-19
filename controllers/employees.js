@@ -19,12 +19,56 @@ const getAll = async (req, res) => {
                     as: 'job_role',
                     attributes: ['id', 'role'],
                     required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
         });
         res.status(200).json(employees);
     } catch (err) {
         res.status(500).json({ message: err.message });
+    }
+};
+
+
+const getById = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const employee = await Employee.findByPk(id, {
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
+                }
+            ]
+        });
+
+        if (!employee) {
+            throw new Error(`Unable to find employee with id ${id}`);
+        }
+       
+
+        res.status(200).json(employee);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
 };
 
@@ -45,6 +89,12 @@ const getByJobRole = async (req, res) => {
                     attributes: ['id', 'role'],
                     required: true,
                     where: { role: jobRole }
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
             order: ['id'],
@@ -99,5 +149,7 @@ const getByName = async (req,res) => {
 module.exports = {
     getAll,
     getByJobRole,
-    getByName
+    getByName,
+    getById
 };
+
