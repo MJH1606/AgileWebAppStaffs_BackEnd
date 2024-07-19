@@ -19,6 +19,12 @@ const getAll = async (req, res) => {
                     as: 'job_role',
                     attributes: ['id', 'role'],
                     required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
         });
@@ -27,6 +33,7 @@ const getAll = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 const getById = async (req, res) => {
     const id = req.params.id;
@@ -44,6 +51,12 @@ const getById = async (req, res) => {
                     as: 'job_role',
                     attributes: ['id', 'role'],
                     required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ]
         });
@@ -51,6 +64,7 @@ const getById = async (req, res) => {
         if (!employee) {
             throw new Error(`Unable to find employee with id ${id}`);
         }
+       
 
         res.status(200).json(employee);
     } catch (error) {
@@ -75,6 +89,12 @@ const getByJobRole = async (req, res) => {
                     attributes: ['id', 'role'],
                     required: true,
                     where: { role: jobRole }
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
             order: ['id'],
