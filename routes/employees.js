@@ -7,6 +7,7 @@ router.get('/jobrole/:role', controller.getByJobRole);
 router.post('/', controller.createEmployee);
 router.get('/name/:firstName/:surname', controller.getByName); 
 router.get('/:id', controller.getById);
+router.put('/update/:id', controller.updateEmployee); 
 
 
 // router.get('/desc/:value', controller.getByDesc);
