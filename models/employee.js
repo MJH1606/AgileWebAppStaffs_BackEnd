@@ -19,8 +19,12 @@ module.exports = (sequelize, Sequelize, systemRole, jobRole) => {
             type: Sequelize.STRING
         },
         managed_by: {
-            type: Sequelize.INTEGER
-        },
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'employee',
+                key: 'id'
+            }
+        }
     }, {
         timestamps: false,
         freezeTableName: true,
@@ -29,6 +33,10 @@ module.exports = (sequelize, Sequelize, systemRole, jobRole) => {
 
     Employee.belongsTo(systemRole, { foreignKey: 'system_role_id' });
     Employee.belongsTo(jobRole, { foreignKey: 'job_role_id' });
+
+    
+    Employee.belongsTo(Employee, { as: 'manager', foreignKey: 'managed_by' });
+    Employee.hasMany(Employee, { as: 'staff', foreignKey: 'managed_by' });
 
     return Employee;
 };
