@@ -19,6 +19,12 @@ const getAll = async (req, res) => {
                     as: 'job_role',
                     attributes: ['id', 'role'],
                     required: true
+                },
+                {
+                    model: Employee,
+                    as: 'manager',
+                    attributes: ['id', 'first_name', 'surname'],
+                    required: false 
                 }
             ],
         });
@@ -27,6 +33,7 @@ const getAll = async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 };
+
 
 const getById = async (req, res) => {
     const id = req.params.id;
