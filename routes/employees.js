@@ -4,6 +4,8 @@ const controller = require('../controllers/employees');
 
 router.get('/', controller.getAll);
 router.get('/jobrole/:role', controller.getByJobRole);
+router.get('/systemrole/:systemRole', controller.getBySystemRole);
+
 router.get('/:id', controller.getById);
 //router.get('/desc/:value', controller.getByDesc);
 
