@@ -2,6 +2,23 @@ const db = require('../models');
 const Employee = db.employee;
 const SystemRole = db.systemRole;
 const JobRole = db.jobRole;
+const sequelize = db.sequelize;
+
+// Helper function to get skills for a list of employees
+const getSkillsForEmployees = async (employees) => {
+    const [skillDetails] = await sequelize.query(`
+        SELECT employee AS employee, skill, level
+        FROM employee_skill_details
+    `);
+
+    return employees.map(employee => {
+        const skills = skillDetails.filter(skill => skill.employee === employee.id);
+        return {
+            ...employee.toJSON(),
+            skills
+        };
+    });
+};
 
 const getAll = async (req, res) => {
     try {
@@ -24,16 +41,18 @@ const getAll = async (req, res) => {
                     model: Employee,
                     as: 'manager',
                     attributes: ['id', 'first_name', 'surname'],
-                    required: false 
+                    required: false
                 }
-            ],
+            ]
         });
-        res.status(200).json(employees);
+
+        const employeesWithSkills = await getSkillsForEmployees(employees);
+
+        res.status(200).json(employeesWithSkills);
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
 };
-
 
 const getById = async (req, res) => {
     const id = req.params.id;
@@ -56,7 +75,7 @@ const getById = async (req, res) => {
                     model: Employee,
                     as: 'manager',
                     attributes: ['id', 'first_name', 'surname'],
-                    required: false 
+                    required: false
                 }
             ]
         });
@@ -64,9 +83,21 @@ const getById = async (req, res) => {
         if (!employee) {
             throw new Error(`Unable to find employee with id ${id}`);
         }
-       
 
-        res.status(200).json(employee);
+        const [skillDetails] = await sequelize.query(`
+            SELECT skill, level
+            FROM employee_skill_details
+            WHERE employee = :employeeId
+        `, {
+            replacements: { employeeId: id }
+        });
+
+        const employeeWithSkills = {
+            ...employee.toJSON(),
+            skills: skillDetails
+        };
+
+        res.status(200).json(employeeWithSkills);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -94,18 +125,15 @@ const getByJobRole = async (req, res) => {
                     model: Employee,
                     as: 'manager',
                     attributes: ['id', 'first_name', 'surname'],
-                    required: false 
+                    required: false
                 }
             ],
-            order: ['id'],
-            
+            order: ['id']
         });
 
-        if (employees.length === 0) {
-            throw new Error(`Unable to find employees with job role ${jobRole}`);
-        }
+        const employeesWithSkills = await getSkillsForEmployees(employees);
 
-        res.status(200).json(employees);
+        res.status(200).json(employeesWithSkills);
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
@@ -138,23 +166,56 @@ const getBySystemRole = async (req, res) => {
                     model: Employee,
                     as: 'manager',
                     attributes: ['id', 'first_name', 'surname'],
-                    required: false 
+                    required: false
+                }
+            ],
+            order: ['id']
+        });
+
+        const employeesWithSkills = await getSkillsForEmployees(employees);
+
+        res.status(200).json(employeesWithSkills);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
+
+const getByName = async (req, res) => {
+    const { firstName, surname } = req.params;
+    try {
+        const employees = await Employee.findAll({
+            where: {
+                first_name: firstName,
+                surname: surname
+            },
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+                {
+                    model: JobRole,
+                    as: 'job_role',
+                    attributes: ['id', 'role'],
+                    required: true
                 }
             ],
             order: ['id']
         });
 
         if (employees.length === 0) {
-            throw new Error(`Unable to find employees with system role ${systemRole}`);
+            throw new Error(`Unable to find employees with name ${firstName} ${surname}`);
         }
 
-        res.status(200).json(employees);
+        const employeesWithSkills = await getSkillsForEmployees(employees);
+
+        res.status(200).json(employeesWithSkills);
     } catch (error) {
         res.status(400).json({ message: error.message });
-    }
+    } 
 };
-
-
 
 const deleteEmployee = async (req, res) => {
     const id = req.params.id;
@@ -229,41 +290,6 @@ const createEmployee = async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
-};
-
-const getByName = async (req, res) => {
-    const { firstName, surname } = req.params;
-    try {
-        const employee = await Employee.findAll({
-            where: {
-                first_name: firstName,
-                surname: surname
-            },
-            include: [
-                {
-                    model: SystemRole,
-                    as: 'system_role',
-                    attributes: ['id', 'role'],
-                    required: true
-                },
-                {
-                    model: JobRole,
-                    as: 'job_role',
-                    attributes: ['id', 'role'],
-                    required: true,
-                }
-            ],
-            order: ['id'],
-        });
-
-        if (employee.length === 0) {
-            throw new Error(`Unable to find employees with name ${firstName} ${surname}`);
-        }
-
-        res.status(200).json(employee);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    } 
 };
 
 module.exports = {
