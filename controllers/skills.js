@@ -34,6 +34,35 @@ getByName = async (req, res) => {
     }
 };
 
+getByCategory = async (req, res) => {
+    const categoryName = req.params.category;
+    try {
+        // Find the category by name
+        const category = await SkillCategory.findOne({ where: { name: categoryName } });
+        if (!category) {
+            throw new Error("Unable to find SkillCategory with name " + categoryName);
+        }
+        
+        // Use the category ID to find skills
+        const skills = await Skill.findAll({
+            where: { category: category.id },
+            include: [{
+                model: SkillCategory,
+                required: true
+            }]
+        });
+        
+        if (skills.length === 0) {
+            throw new Error("No skills found in category " + categoryName);
+        }
+
+        res.status(200).json(skills);
+    } catch (error) {
+        utilities.formatErrorResponse(res, 400, error.message);
+    }
+};
+
+
 create = async (req, res) =>{
     var skill = {
         name: req.body.name,
@@ -99,4 +128,4 @@ getById = async (req, res) => {
     }
 };
 */
-module.exports = { getAll, getByName, create, deleting, update};
+module.exports = { getAll, getByName,getByCategory, create, deleting, update};
