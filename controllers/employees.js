@@ -20,6 +20,34 @@ const getSkillsForEmployees = async (employees) => {
     });
 };
 
+const getSkillsByEmployeeId = async (req, res) => {
+    const id = req.params.id;
+
+    try {
+        
+        const employee = await Employee.findByPk(id);
+        if (!employee) {
+            return res.status(404).json({ message: `Employee with id ${id} not found` });
+        }
+
+        
+        const [skillDetails] = await sequelize.query(`
+            SELECT skill, level, expiration, notes
+            FROM employee_skill_details
+            WHERE employee = :employeeId
+        `, {
+            replacements: { employeeId: id },
+            type: sequelize.QueryTypes.SELECT
+        });
+
+        
+        res.status(200).json({ employeeId: id, skills: skillDetails });
+    } catch (error) {
+        console.error(error); 
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const getAll = async (req, res) => {
     try {
         const employees = await Employee.findAll({
@@ -301,4 +329,5 @@ module.exports = {
     deleteEmployee,  
     getById,
     getBySystemRole,
+    getSkillsByEmployeeId
 };
