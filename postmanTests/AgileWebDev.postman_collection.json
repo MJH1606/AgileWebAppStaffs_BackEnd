@@ -1,0 +1,692 @@
+{
+	"info": {
+		"_postman_id": "66107fc9-e895-4d96-a411-54e72065cfae",
+		"name": "AgileWebDev",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "35144309"
+	},
+	"item": [
+		{
+			"name": "Employees",
+			"item": [
+				{
+					"name": "GetAllEmployees",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByJobRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees/jobrole/Senior%20Developer",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"jobrole",
+								"Senior%20Developer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBySystemRole",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees/systemrole/manager",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"systemrole",
+								"manager"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees/name/john/doe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"name",
+								"john",
+								"doe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateEmployee",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"new_employee\",\n    \"password\": \"securepassword\",\n    \"system_role_id\": 2,\n    \"job_role_id\": 3,\n    \"first_name\": \"Test\",\n    \"surname\": \"Test\",\n    \"managed_by\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEmployee",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees/delete/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"delete",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEmployee",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testssssfarufheiuyg\",\n    \"password\": \"securepassword\",\n    \"system_role_id\": 2,\n    \"job_role_id\": 3,\n    \"first_name\": \"Test\",\n    \"surname\": \"Test\",\n    \"managed_by\": 1\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees/update/11",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"update",
+								"11"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetEmployeeAllocatedSkills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/employees/11/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"11",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddEmployeeSkill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"employee\": 11,\n    \"skill\": \"Java\",\n    \"expiration\": \"2025-12-31\",\n    \"level\": \"3\",\n    \"notes\": \"Has extensive experience with ES6+ features.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees/11/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"11",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateEmployeeSkill",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"employee\": 11,\n    \"skill\": \"Java\",\n    \"expiration\": \"2025-12-31\",\n    \"level\": 3,\n    \"notes\": \"HTESTTESTTETSgdgdfh.\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees/11/skills/java",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"11",
+								"skills",
+								"java"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteEmployeeSkill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/employees/11/skills/java",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"employees",
+								"11",
+								"skills",
+								"java"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Skills",
+			"item": [
+				{
+					"name": "GetAllSkills",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSkillByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skills/name/java",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills",
+								"name",
+								"java"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetSkillByCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skills/category/programming",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills",
+								"category",
+								"programming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddSkill",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pythontest\",\n    \"category\": 2\n    }\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSkill",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Pythontest\",\n    \"category\": 2\n    }\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSkill",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Java\",\n    \"category\": 2\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skills",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skills"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "JobRoles",
+			"item": [
+				{
+					"name": "GetAllJobRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/jobrole",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"jobrole"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SystemRoles",
+			"item": [
+				{
+					"name": "GetAllSystemRoles",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/systemrole",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"systemrole"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SkillCategory",
+			"item": [
+				{
+					"name": "GetAllSkillCategories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skillcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByCategory",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skillCategory/category/Programming",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillCategory",
+								"category",
+								"Programming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8900/api/skillCategory/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillCategory",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateSkillCategory",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"New Category\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skillcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteSkillCategory",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 7\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skillcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillcategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateSkillCategory",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 8,\n    \"name\": \"Testinggggg\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8900/api/skillcategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8900",
+							"path": [
+								"api",
+								"skillcategory"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
