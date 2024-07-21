@@ -11,6 +11,7 @@ router.get('/name/:firstName/:surname', controller.getByName);
 router.get('/:id', controller.getById); 
 router.put('/update/:id', controller.updateEmployee); 
 router.delete('/delete/:id', controller.deleteEmployee); 
+router.post('/:id/skills', controller.addSkillToEmployee);
 
 
 // router.get('/desc/:value', controller.getByDesc);

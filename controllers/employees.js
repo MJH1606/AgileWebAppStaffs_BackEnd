@@ -292,6 +292,38 @@ const createEmployee = async (req, res) => {
     }
 };
 
+const addSkillToEmployee = async (req, res) => {
+    const { id } = req.params; 
+    const { skill, level, expiration, notes } = req.body; 
+
+    try {
+       
+        const employee = await Employee.findByPk(id);
+        if (!employee) {
+            return res.status(404).json({ message: `Employee with id ${id} not found` });
+        }
+
+        
+        await sequelize.query(`
+            INSERT INTO employee_skill_details (employee, skill, level, expiration, notes)
+            VALUES (:employeeId, :skill, :level, :expiration, :notes)
+        `, {
+            replacements: {
+                employeeId: id,
+                skill,
+                level,
+                expiration: expiration || null,
+                notes: notes || null
+            }
+        });
+
+        res.status(201).json({ message: 'Skill  added successfully'});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 module.exports = {
     getAll,
     getByJobRole,
@@ -301,4 +333,5 @@ module.exports = {
     deleteEmployee,  
     getById,
     getBySystemRole,
+    addSkillToEmployee
 };
