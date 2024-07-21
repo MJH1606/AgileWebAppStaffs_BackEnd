@@ -6,31 +6,9 @@ const db = require("../models");
 const JobRole = db.jobRole;
 
 getAll = async (req, res) => {
-    const jobRole = await JobRole.findAll(//{
-        //order:['id'],
-        //include: [{
-        //model: ToolCategory,
-        //required: true
-        //}]
-        //}
+    const jobRole = await JobRole.findAll(
     );
     res.status(200).json(jobRole);
-};
-/*
-getByDesc = async (req, res) => {
-    const desc = req.params.value;
-    try {
-        const tool = await Tool.findAll({ where: { description: desc },
-            include: [{
-            model: ToolCategory,
-            required: true}] });
-    if (tool.length == 0) {
-        throw new Error("Unable to find Tool with description " + desc);
-    }
-    res.status(200).json(tool);
-    } catch (error) {
-        utilities.formatErrorResponse(res, 400, error.message);
-    }
 };
 
 getById = async (req, res) => {
@@ -99,5 +77,5 @@ update = async (req, res) =>{
         utilities.formatErrorResponse(res,400,error.message);
     }
 }
-*/
+
 module.exports = { getAll};

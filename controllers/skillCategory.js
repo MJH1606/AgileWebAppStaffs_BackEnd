@@ -3,7 +3,6 @@ const utilities = require('../utilities/utility');
 const db = require('../models');
 let { getById } = require('./skills');
 
-
 const SkillCategory = db.skillCategory;
 
 getAll = async (req, res) =>{

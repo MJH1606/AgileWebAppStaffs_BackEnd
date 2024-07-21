@@ -24,13 +24,11 @@ const getSkillsByEmployeeId = async (req, res) => {
     const id = req.params.id;
 
     try {
-        // Fetch the employee by ID to check if the employee exists
         const employee = await Employee.findByPk(id);
         if (!employee) {
             return res.status(404).json({ message: `Employee with id ${id} not found` });
         }
 
-        // Fetch skills for the specified employee
         const skillDetails = await sequelize.query(`
             SELECT skill, level, expiration, notes
             FROM employee_skill_details
@@ -40,7 +38,6 @@ const getSkillsByEmployeeId = async (req, res) => {
             type: sequelize.QueryTypes.SELECT
         });
 
-        // Return the skills for the specified employee
         res.status(200).json({ employeeId: id, skills: skillDetails });
     } catch (error) {
         console.error(error);
@@ -343,6 +340,32 @@ const updateSkillDetails = async (req, res) => {
     }
 };
 
+const deleteSkillDetails = async (req, res) => {
+    const { id, skill } = req.params;
+
+    try {
+        const [result] = await sequelize.query(`
+            DELETE FROM employee_skill_details
+            WHERE employee = :employeeId AND skill = :skill
+        `, {
+            replacements: {
+                employeeId: id,
+                skill
+            }
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: `Skill not found for employee with id ${id}` });
+        }
+
+        res.status(200).json({ message: 'Skill deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
 const createEmployee = async (req, res) => {
     const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
     try {
@@ -366,7 +389,6 @@ const addSkillToEmployee = async (req, res) => {
     const { skill, level, expiration, notes } = req.body; 
 
     try {
-       
         const employee = await Employee.findByPk(id);
         if (!employee) {
             return res.status(404).json({ message: `Employee with id ${id} not found` });
@@ -404,6 +426,7 @@ module.exports = {
     getBySystemRole,
     getSkillsByEmployeeId,
     addSkillToEmployee,
-    updateSkillDetails
+    updateSkillDetails,
+    deleteSkillDetails
 };
 

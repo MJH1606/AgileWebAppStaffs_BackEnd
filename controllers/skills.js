@@ -1,8 +1,6 @@
 const router = require("../routes/employees");
 const utilities = require("../utilities/utility");
 const db = require("../models");
-
-
 const Skill = db.skill;
 const SkillCategory = db.skillCategory;
 
@@ -37,13 +35,11 @@ getByName = async (req, res) => {
 getByCategory = async (req, res) => {
     const categoryName = req.params.category;
     try {
-        // Find the category by name
         const category = await SkillCategory.findOne({ where: { name: categoryName } });
         if (!category) {
             throw new Error("Unable to find SkillCategory with name " + categoryName);
         }
         
-        // Use the category ID to find skills
         const skills = await Skill.findAll({
             where: { category: category.id },
             include: [{
@@ -61,7 +57,6 @@ getByCategory = async (req, res) => {
         utilities.formatErrorResponse(res, 400, error.message);
     }
 };
-
 
 create = async (req, res) =>{
     var skill = {
@@ -113,19 +108,5 @@ update = async (req, res) =>{
         utilities.formatErrorResponse(res,400,error.message);
     }
 }
-/*
-getById = async (req, res) => {
-    const id = req.params.id;
-    try {
-        const tool = await Tool.findByPk(id,
-            {include: [{model: ToolCategory, required: true}]});
-        if (tool == null || tool.length == 0) {
-        throw new Error("Unable to find Tool with id " + id);
-        }
-        res.status(200).json(tool);
-    } catch (error) {
-        utilities.formatErrorResponse(res, 400, error.message);
-    }
-};
-*/
+
 module.exports = { getAll, getByName,getByCategory, create, deleting, update};
