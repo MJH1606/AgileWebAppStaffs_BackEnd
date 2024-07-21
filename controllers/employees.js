@@ -302,6 +302,47 @@ const updateEmployee = async (req, res) => {
     }
 };
 
+const updateSkillDetails = async (req, res) => {
+    const { id, skill } = req.params;
+    const { level, expiration, notes } = req.body;
+
+    
+    if (level == null || typeof level !== 'number') {
+        return res.status(400).json({ message: 'Invalid level' });
+    }
+
+    if (expiration && isNaN(Date.parse(expiration))) {
+        return res.status(400).json({ message: 'Invalid expiration date' });
+    }
+
+    try {
+        const [result] = await sequelize.query(`
+            UPDATE employee_skill_details
+            SET level = :level,
+                expiration = :expiration,
+                notes = :notes
+            WHERE employee = :employeeId AND skill = :skill
+        `, {
+            replacements: {
+                employeeId: id,
+                skill,
+                level,
+                expiration: expiration || null,
+                notes: notes || null
+            }
+        });
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: `Skill not found for employee with id ${id}` });
+        }
+
+        res.status(200).json({ message: 'Skill details updated successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
 const createEmployee = async (req, res) => {
     const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
     try {
@@ -329,5 +370,6 @@ module.exports = {
     deleteEmployee,  
     getById,
     getBySystemRole,
-    getSkillsByEmployeeId
+    getSkillsByEmployeeId,
+    updateSkillDetails
 };

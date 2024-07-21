@@ -13,6 +13,7 @@ router.get('/:id', controller.getById);
 router.put('/update/:id', controller.updateEmployee); 
 router.delete('/delete/:id', controller.deleteEmployee); 
 router.get('/:id/skills', controller.getSkillsByEmployeeId);
+router.put('/:id/skills/:skill', controller.updateSkillDetails);
 
 
 // router.get('/desc/:value', controller.getByDesc);
