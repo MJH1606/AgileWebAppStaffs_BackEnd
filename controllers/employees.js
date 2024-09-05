@@ -1,3 +1,5 @@
+const router = require("../routes/employees");
+const utilities = require("../utilities/utility");
 const db = require('../models');
 const Employee = db.employee;
 const SystemRole = db.systemRole;
@@ -242,11 +244,11 @@ const getByName = async (req, res) => {
     } 
 };
 
-const deleteEmployee = async (req, res) => {
-    const id = req.params.id;
+deleteEmployee = async (req, res) => {
+    const id = req.body.id;
     try {
         const numDeleted = await Employee.destroy({
-            where: { id }
+            where: { id: id }
         });
 
         if (numDeleted === 0) {
@@ -255,13 +257,12 @@ const deleteEmployee = async (req, res) => {
 
         res.status(200).json({ message: `Employee with id ${id} deleted successfully` });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        utilities.formatErrorResponse(res,404,error.message);
     }
 };
 
-const updateEmployee = async (req, res) => {
-    const id = req.params.id;
-    const { username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
+updateEmployee = async (req, res) => {
+    const { id, username, password, system_role_id, job_role_id, first_name, surname, managed_by } = req.body;
 
     try {
         const employee = await Employee.findByPk(id);
