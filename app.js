@@ -1,9 +1,11 @@
+require("dotenv").config()
 const express = require('express');
 const logger = require('morgan');
 
 const app = express();
 const port = process.env.PORT || '8900';
 
+const loginRouter = require('./routes/login')
 const employeeRouter = require('./routes/employees');
 const skillRouter = require('./routes/skills');
 const systemRoleRouter = require('./routes/systemRole');
@@ -20,6 +22,7 @@ app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 }); 
 
+app.use("/", loginRouter)
 app.use("/api/employees", employeeRouter);
 app.use("/api/skills", skillRouter);
 app.use("/api/systemRole", systemRoleRouter);
