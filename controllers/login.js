@@ -1,33 +1,69 @@
 const jwt = require('jsonwebtoken');
 
-const login = (req, res) =>{
+const db = require('../models');
+const Employee = db.employee;
+const SystemRole = db.systemRole;
+
+const login = async (req, res) => {
     const userLoginDetails = {
         username: req.body.username,
         password: req.body.password
     };
 
+    try {
+        // Fetch user from the database by username
+        const user = await Employee.findOne({
+            where: {
+                username: userLoginDetails.username
+            },
+            include: [
+                {
+                    model: SystemRole,
+                    as: 'system_role',
+                    attributes: ['id', 'role'],
+                    required: true
+                },
+            ]
+        });
 
-    //FAKE RECORD INFO - ACTUAL WILL BE RETURNED FROM DB
-    const user = {
-        firstName: "Celia",
-        systemRole: "admin"
-    }
+        // Check if user exists
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: 'Username or password is incorrect'
+            });
+        }
 
-    //TEMP - HARD CODED PW CHECK
-    if (userLoginDetails.username == "user1"
-        && userLoginDetails.password == "password1"
-    ){
-        const accessToken = jwt.sign( user, process.env.SECRET);
+        // Verify password using bcrypt
+        if (userLoginDetails.password !== user.password) {
+            return res.status(401).json({
+                success: false,
+                message: 'Username or password is incorrect'
+            });
+        }
 
-        res.json({
+        // Create JWT payload
+        const tokenPayload = {
+            id: user.id,
+            username: user.username,
+            systemRole: user.system_role_id
+        };
+
+        // Sign JWT and return it
+        const accessToken = jwt.sign(tokenPayload, process.env.SECRET, { expiresIn: '1h' });
+
+        return res.json({
+            success: true,
             accessToken
         });
-    } else { //USERNAME AND PASSWORD DOES NOT MATCH
-        res.status(401).json({
+
+    } catch (error) {
+        console.error('Error during login:', error);
+        return res.status(500).json({
             success: false,
-            message: 'username or password is incorrect'
+            message: 'Internal server error'
         });
     }
-}
+};
 
 module.exports = {login}
