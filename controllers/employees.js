@@ -5,6 +5,7 @@ const Employee = db.employee;
 const SystemRole = db.systemRole;
 const JobRole = db.jobRole;
 const sequelize = db.sequelize;
+const jwt = require('jsonwebtoken');
 
 
 const getSkillsForEmployees = async (employees) => {
@@ -416,6 +417,32 @@ const addSkillToEmployee = async (req, res) => {
     }
 };
 
+const getUserInfo = async (req, res) => {
+    const authHeader = req.headers.authorization; //looking for our header
+    var token
+    if (authHeader) { //Should contain “Bearer ” followed by the token
+        token = authHeader.split(' ')[1];//retrieve value after space
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, process.env.SECRET);
+        // Send the user info (decoded from the token)
+        return res.json({
+            id: decoded.id,
+            systemRole: decoded.systemRole,
+            username: decoded.username
+        });
+    } catch (error) {
+        return res.status(401).json({ message: 'Invalid token' });
+    }
+    } else {
+            res.sendStatus(404);
+    }
+};
+
 module.exports = {
     getAll,
     getByJobRole,
@@ -428,6 +455,7 @@ module.exports = {
     getSkillsByEmployeeId,
     addSkillToEmployee,
     updateSkillDetails,
-    deleteSkillDetails
+    deleteSkillDetails,
+    getUserInfo
 };
 

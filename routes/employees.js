@@ -8,6 +8,8 @@ router.delete('/', controller.deleteEmployee);
 router.post('/', controller.createEmployee);
 router.put('/', controller.updateEmployee);
 
+router.get('/getUserInfo', controller.getUserInfo);
+
 router.get('/:id', controller.getById);
 
 router.get('/jobrole/:role', controller.getByJobRole);
