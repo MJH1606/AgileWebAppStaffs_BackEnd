@@ -304,9 +304,7 @@ updateEmployee = async (req, res) => {
 const updateSkillDetails = async (req, res) => {
     const { id, skill } = req.params;
     const { level, expiration, notes } = req.body;
-
-    
-    if (level == null || typeof level !== 'number') {
+    if (level == null) {
         return res.status(400).json({ message: 'Invalid level' });
     }
 
